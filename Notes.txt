@@ -6,3 +6,5 @@ This file is notes taken while reading the paper, about what we need to focus on
 p_T (transverse momentum), eta (pseudorapidity), radial vertex position, centrality (using which we divide collisions into centrality bins), s_MM (the square root of which is the colliding energy).
 4. There are 7 different colliding energies we need to plot for.
 5. The data file is a .root file. We need to look up how to use that.
+
+3fbjr3egkml
