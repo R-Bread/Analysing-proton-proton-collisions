@@ -9,19 +9,17 @@ private:
     TTree* m_tree = nullptr;
     unsigned int m_size;
     int m_ntrack;
-    int MAX_SIZE;// = 192;// max(ntrack)=192
+    int MAX_SIZE; //max(ntrack)=192
 
     double *m_eta;
-    double *m_pT;//[MAX_SIZE];
-    double *m_pid;//[MAX_SIZE];
-    double *m_rap;//[MAX_SIZE];
-    double *m_phi;//[MAX_SIZE];
+    double *m_pT;
+    double *m_pid;
+    double *m_rap;
+    double *m_phi;
     
 public:
     tree(const char* tree_name, TFile* ptr_to_file, int max_size=200)
     {
-        //MAX_SIZE = max_size;
-
         /*
         max sizes are:
             pytree          =   192
@@ -43,12 +41,14 @@ public:
 
         m_tree = ptr_to_file->Get<TTree>(tree_name);
         m_size = m_tree->GetEntries();
+        
         m_tree->SetBranchAddress("ntrack", &m_ntrack);
         m_tree->SetBranchAddress("eta", m_eta);
         m_tree->SetBranchAddress("pT", m_pT);
         m_tree->SetBranchAddress("rap", m_rap);
         m_tree->SetBranchAddress("phi", m_phi);
     }
+    
     ~tree()
     {
         delete[] m_eta;
