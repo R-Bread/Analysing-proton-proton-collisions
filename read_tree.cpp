@@ -23,8 +23,13 @@ public:
             MAX_SIZE = max_size;
             /*
             max sizes are:
-                pytree = 192
-                pytree
+                pytree          =   192
+                pytree2040      =   40
+                pytree4060      =   60
+                pytree020       =   20
+                pytree6080      =   80
+                pytree80100     =   100
+                pytree100       =   192
             */
 
 
