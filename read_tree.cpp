@@ -3,161 +3,70 @@ An abstraction on ROOT's TTree class, to make it easier to read
 values from the diffrent events
 */
 
-class tree
+
+       
+/*
+max sizes are:
+    pytree          =   192
+    pytree2040      =   40
+    pytree4060      =   60
+    pytree020       =   20
+    pytree6080      =   80
+    pytree80100     =   100
+    pytree100       =   192
+*/
+
+class read_from_tree_variable
 {
 private:
-    TTree* m_tree = nullptr;
-    unsigned int m_size;
-    int m_ntrack;
-    int MAX_SIZE; //max(ntrack)=192
-
-    double *m_eta;
-    double *m_pT;
-    double *m_pid;
-    double *m_rap;
-    double *m_phi;
-    
+    const char* variable_to_read;
+    TTree* m_tree_ptr;
+    int m_maxsize;
+    double* m_var_data;
 public:
-    tree(const char* tree_name, TFile* ptr_to_file, int max_size=200)
+    read_from_tree_variable(const char* variable_name, const char* tree_name, TFile* file, int max_size=200)
+        : variable_to_read(variable_name), m_tree_ptr(file->Get<TTree>(tree_name))
     {
-        /*
-        max sizes are:
-            pytree          =   192
-            pytree2040      =   40
-            pytree4060      =   60
-            pytree020       =   20
-            pytree6080      =   80
-            pytree80100     =   100
-            pytree100       =   192
-        */
-
-        m_eta = new double[max_size];
-        m_pid = new double[max_size];
-        m_pT = new double[max_size];
-        m_rap = new double[max_size];
-        m_phi = new double[max_size];
-
-        MAX_SIZE = max_size;
-
-        m_tree = ptr_to_file->Get<TTree>(tree_name);
-        m_size = m_tree->GetEntries();
-        
-        m_tree->SetBranchAddress("ntrack", &m_ntrack);
-        m_tree->SetBranchAddress("eta", m_eta);
-        m_tree->SetBranchAddress("pT", m_pT);
-        m_tree->SetBranchAddress("rap", m_rap);
-        m_tree->SetBranchAddress("phi", m_phi);
-    }
-    
-    ~tree()
-    {
-        delete[] m_eta;
-        delete[] m_pid;
-        delete[] m_rap;
-        delete[] m_phi;
-        delete[] m_pT;
+        m_maxsize = max_size;
+        m_var_data = new double[max_size];
+        m_tree_ptr->SetBranchAddress(variable_name, m_var_data);
     }
 
-    void get_eta(unsigned int index, std::vector<double> &eta)
+    ~read_from_tree_variable()
     {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            eta.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                eta.push_back(m_eta[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
+        delete[] m_var_data;
     }
 
-    void get_pT(unsigned int index, std::vector<double> &pT)
+    double* get(int index)
     {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            pT.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                pT.push_back(m_pT[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-    }
-    
-    void get_pid(unsigned int index, std::vector<double> &pid)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            pid.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                pid.push_back(m_pid[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-    }
-    
-    void get_rap(unsigned int index, std::vector<double> &rap)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            rap.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                rap.push_back(m_rap[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-
-    }
-    
-    void get_phi(unsigned int index, std::vector<double> &phi)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            phi.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                phi.push_back(m_phi[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
+        m_tree_ptr->GetEntry(index);
+        return m_var_data;
     }
 
-    void get_ntrack(unsigned int index, int &ntrack)
+};
+
+class read_from_tree_ntrack
+{
+private:
+    const char* variable_to_read;
+    TTree* m_tree_ptr;
+    int ntrack;
+public:
+    read_from_tree_ntrack(const char* tree_name, TFile* file)
+        : m_tree_ptr(file->Get<TTree>(tree_name))
     {
-        if (index < m_size)
-        {
-            ntrack = m_ntrack;
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
+        m_tree_ptr->SetBranchAddress("ntrack", &ntrack);
+    }
+
+    int get(int index)
+    {
+        m_tree_ptr->GetEntry(index);
+        return ntrack;
     }
 
     int max_index()
     {
-        return m_size;
+        return m_tree_ptr->GetEntries();
     }
 };
+
