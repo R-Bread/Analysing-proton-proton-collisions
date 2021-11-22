@@ -4,8 +4,8 @@ void plot1and2()
 {
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
  
-    TH1 *plot1 = new TH1F("h", "Plot - 2", 192, 0, 192);
-    TH1 *plot2 = new TH1F("h", "Plot - 1", 192, 0, 192);
+    TH1 *plot1 = new TH1F("plot1", "Plot - 2", 192, 0, 192);
+    TH1 *plot2 = new TH1F("plot2", "Plot - 1", 192, 0, 192);
 
     const char* tree_names[] = {
         "pytree",
@@ -60,6 +60,4 @@ void plot1and2()
     plot2->GetXaxis()->SetTitle("Multiplicity");
     c1->cd(2);
     plot2->Draw();
-
-    
 }
