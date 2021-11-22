@@ -16,19 +16,22 @@ max sizes are:
     pytree100       =   192
 */
 
+#pragma once
+
+template<typename d_type>
 class read_from_tree_variable
 {
 private:
     const char* variable_to_read;
     TTree* m_tree_ptr;
     int m_maxsize;
-    double* m_var_data;
+    d_type* m_var_data;
 public:
     read_from_tree_variable(const char* variable_name, const char* tree_name, TFile* file, int max_size=200)
         : variable_to_read(variable_name), m_tree_ptr(file->Get<TTree>(tree_name))
     {
         m_maxsize = max_size;
-        m_var_data = new double[max_size];
+        m_var_data = new d_type[max_size];
         m_tree_ptr->SetBranchAddress(variable_name, m_var_data);
     }
 
@@ -37,7 +40,7 @@ public:
         delete[] m_var_data;
     }
 
-    double* get(int index)
+    d_type* get(int index)
     {
         m_tree_ptr->GetEntry(index);
         return m_var_data;
