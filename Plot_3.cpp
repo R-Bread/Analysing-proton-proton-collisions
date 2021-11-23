@@ -1,85 +1,3 @@
-class tree
-{
-private:
-    TTree* m_tree = nullptr;
-    unsigned int m_size;
-    int m_ntrack;
-    int MAX_SIZE;// = 192;// max(ntrack)=192
-
-    double *m_eta;
-    double *m_pT;//[MAX_SIZE];
-    
-public:
-    tree(const char* tree_name, TFile* ptr_to_file, int max_size=200)
-    {
-        //MAX_SIZE = max_size;
-
-        /*
-        max sizes are:
-            pytree          =   192
-            pytree2040      =   40
-            pytree4060      =   60
-            pytree020       =   20
-            pytree6080      =   80
-            pytree80100     =   100
-            pytree100       =   192
-        */
-
-        m_eta = new double[max_size];
-        m_pT = new double[max_size];
-
-        MAX_SIZE = max_size;
-
-        m_tree = ptr_to_file->Get<TTree>(tree_name);
-        m_size = m_tree->GetEntries();
-        m_tree->SetBranchAddress("ntrack", &m_ntrack);
-        m_tree->SetBranchAddress("eta", m_eta);
-        m_tree->SetBranchAddress("pT", m_pT);
-    }
-    ~tree()
-    {
-        delete[] m_eta;
-        delete[] m_pT;
-    }
-
-    void get_eta(unsigned int index, std::vector<double> &eta)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            eta.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                eta.push_back(m_eta[i]);
-            }
-        }
-    }
-
-    void get_pT(unsigned int index, std::vector<double> &pT)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            pT.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                pT.push_back(m_pT[i]);
-            }
-        }
-    }
-
-    int get_ntrack(unsigned int index)
-    {
-        m_tree->GetEntry(index);
-        return m_ntrack;
-    }
-
-    int max_index()
-    {
-        return m_size;
-    }
-};
-
 void Plot_3()
 {
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
@@ -103,17 +21,18 @@ void Plot_3()
 
     for (int i = 1; i < 7; i++)
     {
-        tree t(tree_names[i], dataset, tree_sizes[i]);
+        read_from_tree_ntrack v_ntrack(tree_names[i], dataset);
+        read_from_tree_variable<double> v_eta("eta", tree_names[i], dataset, tree_sizes[i]);
+        read_from_tree_variable<double> v_pT("pT", tree_names[i], dataset, tree_sizes[i]);
 
-        for (int j = 0; j < t.max_index(); j++)
+        int max_index = v_ntrack.max_index();
+        
+        for (int j = 0; j < max_index; j++)
         {
-            int ntrack = t.get_ntrack(j);
+            int ntrack = v_ntrack.get(j);
             
-            std::vector<double> eta = {};
-            t.get_eta(j, eta);
-
-            std::vector<double> pT = {};
-            t.get_pT(j, pT);
+            double *eta = v_eta.get(j);
+            double *pT = v_pT.get(j);
 
             int x = 0;
             int y = 0;
