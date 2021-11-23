@@ -53,10 +53,6 @@ public:
                 eta.push_back(m_eta[i]);
             }
         }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
     }
 
     void get_pT(unsigned int index, std::vector<double> &pT)
@@ -69,10 +65,6 @@ public:
             {
                 pT.push_back(m_pT[i]);
             }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
         }
     }
 
