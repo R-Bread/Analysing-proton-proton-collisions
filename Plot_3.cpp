@@ -8,9 +8,6 @@ private:
 
     double *m_eta;
     double *m_pT;//[MAX_SIZE];
-    double *m_pid;//[MAX_SIZE];
-    double *m_rap;//[MAX_SIZE];
-    double *m_phi;//[MAX_SIZE];
     
 public:
     tree(const char* tree_name, TFile* ptr_to_file, int max_size=200)
@@ -29,10 +26,7 @@ public:
         */
 
         m_eta = new double[max_size];
-        m_pid = new double[max_size];
         m_pT = new double[max_size];
-        m_rap = new double[max_size];
-        m_phi = new double[max_size];
 
         MAX_SIZE = max_size;
 
@@ -41,15 +35,10 @@ public:
         m_tree->SetBranchAddress("ntrack", &m_ntrack);
         m_tree->SetBranchAddress("eta", m_eta);
         m_tree->SetBranchAddress("pT", m_pT);
-        m_tree->SetBranchAddress("rap", m_rap);
-        m_tree->SetBranchAddress("phi", m_phi);
     }
     ~tree()
     {
         delete[] m_eta;
-        delete[] m_pid;
-        delete[] m_rap;
-        delete[] m_phi;
         delete[] m_pT;
     }
 
@@ -79,58 +68,6 @@ public:
             for (int i = 0; i < m_ntrack; i++)
             {
                 pT.push_back(m_pT[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-    }
-    
-    void get_pid(unsigned int index, std::vector<double> &pid)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            pid.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                pid.push_back(m_pid[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-    }
-    
-    void get_rap(unsigned int index, std::vector<double> &rap)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            rap.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                rap.push_back(m_rap[i]);
-            }
-        }
-        else 
-        {
-            std::cout << "Error: Index Out of Range! Got " << index << " but maximum = " << m_size << '\n';
-        }
-
-    }
-    
-    void get_phi(unsigned int index, std::vector<double> &phi)
-    {
-        if (index < m_size)
-        {
-            m_tree->GetEntry(index);
-            phi.reserve(m_ntrack);
-            for (int i = 0; i < m_ntrack; i++)
-            {
-                phi.push_back(m_phi[i]);
             }
         }
         else 
@@ -209,6 +146,14 @@ void Plot_3()
     Hist2D->SetStats(0);
 
     Hist2D->SetContour(1000);
+    
+    c1->SetLogz();
+    c1->SetTickx();
+    c1->SetTicky();
+    c1->SetGridx();
+    c1->SetGridy();
+    
+    //Some manual adjustments of position and size of some objects in the plot will be required
 
     Hist2D->Draw("colz");
 }
