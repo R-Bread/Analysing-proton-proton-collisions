@@ -1,11 +1,14 @@
 void Plot_3()
 {
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
+    TH2I *Hist2D = new TH2I("Hist2D", " ", 130, 0, 130, 100, 0, 100);
 
     TCanvas *c1 = new TCanvas();
-    gStyle->SetPalette(kRainBow);
+    c1->Range(-17.15105,-12.63158,156.348,112.3684);
+    c1->SetBorderSize(2);
+    c1->SetRightMargin(0.1518625);
 
-    TH2I *Hist2D = new TH2I("Hist2D", "Plot 3", 150, 0, 150, 150, 0, 150);
+    gStyle->SetPalette(kRainBow);
 
     const char* tree_names[] = {
         "pytree",
@@ -36,35 +39,39 @@ void Plot_3()
 
             int x = 0;
             int y = 0;
+            int counter = 0;
 
             for (int k = 0; k < ntrack; k++)
             {
-                if (pT[k] > 0.2 && pT[k] < 2.0)
+                if (pT[k] > 0.5)
                 {
                     if (eta[k] < 1.0 && eta[k] > -1.0) y++;
                     else x++;
+
+                    counter++;
                 }
             }
 
-            Hist2D->Fill(x,y);
+            if (counter != 0) Hist2D->Fill(x,y);
         }
     }
 
-    Hist2D->GetXaxis()->SetTitle("Multiplicity in Non-Accepting Region");
-    Hist2D->GetYaxis()->SetTitle("Mulitplicity in Accepting Region");
-    Hist2D->GetZaxis()->SetTitle("Entries");
+    Hist2D->GetXaxis()->SetTitle("Multiplicity for |#eta| > 1");
+    Hist2D->GetYaxis()->SetTitle("Mulitplicity for |#eta| < 1");
+    Hist2D->GetZaxis()->SetTitle("No. of Events");
 
     Hist2D->SetStats(0);
 
     Hist2D->SetContour(1000);
+
+    TPaletteAxis *palette = new TPaletteAxis(134.2256,-1.666577e-07,142.1797,100,Hist2D);
+    Hist2D->GetListOfFunctions()->Add(palette,"br");
     
     c1->SetLogz();
     c1->SetTickx();
     c1->SetTicky();
     c1->SetGridx();
     c1->SetGridy();
-    
-    //Some manual adjustments of position and size of some objects in the plot will be required
 
     Hist2D->Draw("colz");
 }
