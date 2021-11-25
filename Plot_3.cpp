@@ -1,5 +1,7 @@
 void Plot_3()
 {
+    //2D Histogram plot of Multiplicities of |η| < 1 vs |η| > 1 for each event
+    
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
     TH2I *Hist2D = new TH2I("Hist2D", " ", 130, 0, 130, 100, 0, 100);
 
