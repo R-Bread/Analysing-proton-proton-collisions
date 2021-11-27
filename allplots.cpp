@@ -1,5 +1,3 @@
-#pragma once
-
 template<typename d_type>
 class read_from_tree_variable
 {
