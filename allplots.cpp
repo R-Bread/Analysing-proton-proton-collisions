@@ -1,3 +1,5 @@
+#include "read.cpp"
+
 void allplots()
 {
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
