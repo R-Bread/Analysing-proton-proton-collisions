@@ -101,11 +101,13 @@ void plot1and2()
     
     
     c3->cd();
+    plot1c->SetFillColor(kYellow);
     plot1c->GetXaxis()->SetTitle("Multiplicity (|\\eta| > 1)");
     plot1c->GetYaxis()->SetTitle("Frequency");
     plot1c->Draw();
 
     c4->cd();
+    plot2c->SetFillColor(kYellow);
     plot2c->GetXaxis()->SetTitle("Multiplicity (|\\eta| < 1)");
     plot2c->GetYaxis()->SetTitle("Frequency");
     plot2c->Draw();
