@@ -5,7 +5,7 @@ void Plot_3()
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
     TH2I *Hist2D = new TH2I("Hist2D", " ", 130, 0, 130, 100, 0, 100);
 
-    TCanvas *c1 = new TCanvas();
+    TCanvas *c1 = new TCanvas("c1","Plot 3");
     c1->Range(-17.15105,-12.63158,156.348,112.3684);
     c1->SetBorderSize(2);
     c1->SetRightMargin(0.1518625);
@@ -41,14 +41,14 @@ void Plot_3()
 
             int x = 0;
             int y = 0;
-            int counter = 0;
+            int counter = 0;    //to make sure we're not counting the particles that don't satisfy the pT condition
 
             for (int k = 0; k < ntrack; k++)
             {
                 if (pT[k] > 0.5)
                 {
-                    if (eta[k] < 1.0 && eta[k] > -1.0) y++;
-                    else x++;
+                    if (eta[k] < 1.0 && eta[k] > -1.0) y++;     //acceptance region multiplicity
+                    else x++;   //non-acceptance region multiplicity
 
                     counter++;
                 }
