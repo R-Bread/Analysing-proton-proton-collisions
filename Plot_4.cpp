@@ -72,9 +72,9 @@ void Plot_4()
     TPaletteAxis *palette = new TPaletteAxis(145.6517,-39.89474,153.9946,40.10526,plot);
     
     plot->GetListOfFunctions()->Add(palette,"br");
-    plot->GetXaxis()->SetTitle("Multiplicity");
+    plot->GetXaxis()->SetTitle("Multiplicity ( |#eta| > 1 )");
     plot->GetYaxis()->SetTitle("Net Charge");
-    plot->GetZaxis()->SetTitle("Entries");
+    plot->GetZaxis()->SetTitle("No. of Events");
 
     c1->SetLogz();
     c1->SetGridx();
