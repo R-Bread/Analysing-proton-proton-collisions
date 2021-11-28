@@ -13,13 +13,17 @@ void plot1and2()
 
     const int tree_sizes[] = {20, 40, 60,  80, 100, 192};
 
-    auto c1 = new TCanvas("c1", "Plot-1", 800, 600);
-    auto c2 = new TCanvas("c2", "Plot-2", 800, 600);
+    TCanvas* c1 = new TCanvas("c1", "Plot-1", 800, 600);
+    TCanvas* c2 = new TCanvas("c2", "Plot-2", 800, 600);
+    TCanvas* c3 = new TCanvas("c3", "Plot-1 (combined)", 800, 600);
+    TCanvas* c4 = new TCanvas("c4", "Plot-2 (combined)", 800, 600);
     c1->Divide(3, 2);
     c2->Divide(3, 2);
     
     TH1* plot1[6];
     TH1* plot2[6];
+    TH1* plot1c = new TH1F("plot1c", "", 192, 0, 192);
+    TH1* plot2c = new TH1F("plot2c", "", 192, 0, 192);
     
 
     for (int i = 0; i < 6; i++)
@@ -63,32 +67,47 @@ void plot1and2()
                     if (eta[k] < -1 || eta[k] > 1)
                     {
                         plot1[i]->Fill(ntrack);
+                        plot1c->Fill(ntrack);
                     }
                     else
                     {
                         plot2[i]->Fill(ntrack);
+                        plot2c->Fill(ntrack);
                     }
                 }
-            }
-
-            plot1[i]->SetFillColor(kYellow);
-            c1->cd(i+1);
-            plot1[i]->Draw();
-
-            plot2[i]->SetFillColor(kYellow);
-            c2->cd(i+1);
-            plot2[i]->Draw();
-            
+            }   
         }
+        
+        plot1[i]->SetFillColor(kYellow);
+        c1->cd(i+1);
+        plot1[i]->Draw();
+
+        plot2[i]->SetFillColor(kYellow);
+        c2->cd(i+1);
+        plot2[i]->Draw();
+        
+      
     }
 
     plot1[0]->GetYaxis()->SetTitle("Frequency");
     plot1[0]->GetYaxis()->SetTitleSize(0.06);
-    plot1[5]->GetXaxis()->SetTitle("Multiplicity (|\\eta| > 1)  ");
+    plot1[5]->GetXaxis()->SetTitle("Multiplicity (|\\eta| > 1)");
     plot1[5]->GetXaxis()->SetTitleSize(0.06);
 
     plot2[0]->GetYaxis()->SetTitle("Frequency");
     plot2[0]->GetYaxis()->SetTitleSize(0.06);
-    plot2[5]->GetXaxis()->SetTitle("Multiplicity (|\\eta| < 1)  ");
+    plot2[5]->GetXaxis()->SetTitle("Multiplicity (|\\eta| < 1)");
     plot2[5]->GetXaxis()->SetTitleSize(0.06);
+    
+    
+    c3->cd();
+    plot1c->GetXaxis()->SetTitle("Multiplicity (|\\eta| > 1)");
+    plot1c->GetYaxis()->SetTitle("Frequency");
+    plot1c->Draw();
+
+    c4->cd();
+    plot2c->GetXaxis()->SetTitle("Multiplicity (|\\eta| < 1)");
+    plot2c->GetYaxis()->SetTitle("Frequency");
+    plot2c->Draw();
+    
 }
