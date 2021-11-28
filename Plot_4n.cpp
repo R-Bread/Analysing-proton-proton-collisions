@@ -5,12 +5,12 @@ void Plot_4n()
     TFile *dataset = TFile::Open("13TeV_CR0_RHoff.root");
     TH2F *plot = new TH2F("plot", " ", 140, 0, 140, 80, -40, 40);
 
-    TCanvas *c1 = new TCanvas("c1", "Plot 4",18,41,700,500);
+    TCanvas *c1 = new TCanvas("c1", "Plot 4 - Normalized",18,41,700,500);
     c1->Range(-18.78508,-50.10526,169.0657,50);
     c1->SetRightMargin(0.1547278);
     c1->SetBorderSize(2);
 
-    gStyle->SetPalette(kRainBow);
+    gStyle->SetPalette(kBird);
 
     const char* tree_names[] = {
         "pytree",
@@ -80,7 +80,7 @@ void Plot_4n()
     TPaletteAxis *palette = new TPaletteAxis(145.6517,-39.89474,153.9946,40.10526,plot);
     
     plot->GetListOfFunctions()->Add(palette,"br");
-    plot->GetXaxis()->SetTitle("Multiplicity");
+    plot->GetXaxis()->SetTitle("Multiplicity ( |#eta| > 1 )");
     plot->GetYaxis()->SetTitle("Net Charge");
     plot->GetZaxis()->SetTitle("Normalized no. of Events");
 
