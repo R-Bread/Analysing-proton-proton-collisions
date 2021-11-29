@@ -12,5 +12,8 @@ Open ROOT in this directory, then run the following code.
 ```
 .L read.cpp
 .x plot1and2.cpp
-.x
+.x plot3.cpp
+.x plot4.cpp
+.x plot4n.cpp
+.x plot59.cpp
 ```
