@@ -13,7 +13,7 @@ To implement the paper, "Beam Energy Dependence of Moments of the Net-Charge Mul
 - _Results_ contains images of the plots obtained.
 - _PH219_Project_Report_ is the final project report.
 
-### To Run
+### Running the code
 Open the ROOT command line in the `Code Files` directory, place the data file (`13TeV_CR0_RHoff.root`) in the same directory, then run the following code.
 ```
 .L read.cpp
