@@ -3,7 +3,7 @@ A course project for the course PH 219 at IIT Bombay, under Professor Sadhana Da
 
 Team: Ayush, Anurag, Mukesh, Paritosh, Pravind, Rehmat, Samyak, Shreyas
 
-_Aim_
+### Aim
 
 To analyse, using ROOT (CERN), p-p collisions at sqrt(s) = 13 TeV generated with the Pythia 8 Monte Carlo event generator, and study the fluctuations in net charge against the multiplicity of the collisions.
 
